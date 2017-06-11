@@ -1,0 +1,82 @@
+\documentclass[11pt]{jsarticle}
+
+\usepackage[top=30mm, bottom=36mm, left=28mm, right=28mm]{geometry}
+\usepackage{url}
+
+\usepackage{mytitle}
+
+\title{0. チュートリアル概要}
+\author{201720690 小松 弘人}
+\date{2017/06/12}
+
+\makeatletter
+\def\mojiparline#1{
+    \newcounter{mpl}
+    \setcounter{mpl}{#1}
+    \@tempdima=\linewidth
+    \advance\@tempdima by-\value{mpl}zw
+    \addtocounter{mpl}{-1}
+    \divide\@tempdima by \value{mpl}
+    \advance\kanjiskip by\@tempdima
+    \advance\parindent by\@tempdima
+}
+\makeatother
+\def\linesparpage#1{
+    \baselineskip=\textheight
+    \divide\baselineskip by #1
+}
+
+\begin{document}
+\maketitle
+\subsection*{演習概要}
+FPGAによる処理の基本および開発方法の基礎を学ぶため、
+画像のストリーム処理についての簡単な演習を行う。
+画像フィルタは、計算の簡単さから$3\!\times\!3$
+ガウシアンフィルタを実装することとする。
+本チュートリアルでは、プラットフォームとして
+ZedBoard上でXillinuxを起動し、その上で演習を行っていく。
+
+\subsection*{演習で学ぶこと}
+\begin{itemize}
+	\item
+		ストリーム処理の基礎
+	\item
+		Vivadoでの開発方法の基礎
+	\item
+		Verilogの基礎
+\end{itemize}
+
+\subsection*{演習期間の目安}
+1週間～
+
+\subsection*{事前に準備するもの}
+\begin{itemize}
+	\item
+		ZedBoardとその周辺機器 (VGAディスプレイ、キーボード、マウス、USBハブなど)
+	\item
+		$2\mathrm{[GByte]}$以上のSDカード
+	\item
+		Vivado 2014.4以降 (ライセンスはWebPACKでOK)
+	\item
+		演習に必要なファイル一式
+\end{itemize}
+
+\subsection*{演習に必要なファイル}
+GitHub (\url{https://github.com/HDL-tutorial})に、
+演習に必要なデータをアップロードしている。
+それぞれのリポジトリには、次のようなデータが入っている。
+
+\begin{itemize}
+	\item
+		documents: このドキュメントを含む、本演習のドキュメント集
+	\item
+		xillinux: Vivadoプロジェクトなどを含むXillinuxのブートパーティションキット
+	\item
+		software: ZedBoard上で動作させるC++プログラム
+	\item
+		out-sim-software: 実機で得られた結果画像が正しいか確認するためのプログラム
+\end{itemize}
+
+各リポジトリのページから、ZIPでダウンロード、もしくはgitを使ってクローンすること。
+
+\end{document}
