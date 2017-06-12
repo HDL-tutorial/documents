@@ -164,4 +164,53 @@ Xillinuxのディスプレイは各色4bitであるため、
 そこで、\verb|ssh|などで別コンピュータに移動し、
 確認することを薦める。
 
+\subsubsection*{Verilogの最低限の文法}
+調べたほうが詳しく分かりやすく出るが、
+Verilogの最低限の文法を記載していく。\\
+\begin{verbatim}
+// コメント
+/* 複数行コメント */
+
+/* 変数宣言 */
+wire wa; // 1bitの配線を宣言
+wire [7:0] wb; // 8bitの配線を宣言
+reg ra; // 1bitのレジスタを宣言
+reg [7:0] rb = 8'h00; // 8bitのレジスタを宣言し初期化
+assign wa = ra; // 継続的代入
+
+/* 数字リテラル */
+2'b10 // 2進数表記 2 (2bit)
+8'd10 // 10進数表記 10 (8bit)
+8'h10 // 16進数表記 16 (8bit)
+
+/* 演算子 */
+wa + wb; // 加算
+wa - wb; // 減算
+wa * wb; // 乗算
+wa >> 1; // 論理右シフト
+wa << 1; // 論理左シフト
+wa >>> 1; // 算術右シフト
+wb & 8'h0f; // AND演算
+wb | 8'h0f; // OR演算
+wb ^ 8'h0f; // XOR演算
+~wa // 否定
+wb == rb // 比較 (等号)
+wb != rb // 比較 (不等号)
+wb < rb // 比較
+wb >= rb // 比較
+
+/* 信号の連結 */
+{8'h00, rb} // 16bit
+
+/* 信号の特定bitの抽出 */
+wb[3:0] // 下位4bit
+
+/* 組み合わせ回路の記述 */
+always@(posedge clk) // clkの立ち上がりで実行する
+begin
+    ra = wa; // ブロッキング代入
+    rb <= wb; // ノンブロッキング代入
+end
+\end{verbatim}
+
 \end{document}
