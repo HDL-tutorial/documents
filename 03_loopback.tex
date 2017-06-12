@@ -150,7 +150,7 @@ File locationはuserfiles/verilogとし、OKをクリック。
 Xillinuxに、チュートリアルのページから、
 softwareリポジトリをダウンロードし、展開しておくこと。
 展開したディレクトリでmakeを実行すると、
-bin/send\_bmpができる。
+\verb|bin/send_bmp|ができる。
 下記のように実行する。
 
 \begin{center}
@@ -158,11 +158,10 @@ bin/send\_bmpができる。
 \end{center}
 
 \subsubsection*{結果画像の確認}
-入出力画像に差がないことを確認する。
+出力画像が入力画像をグレースケールにした画像となることを確認する。
 Xillinuxのディスプレイは各色4bitであるため、
 正しく画像の比較ができない。
 そこで、\verb|ssh|などで別コンピュータに移動し、
-確認することを進める。
-また、Root Mean Squared Error (RMSE) を計算するのもよい。
+確認することを薦める。
 
 \end{document}
