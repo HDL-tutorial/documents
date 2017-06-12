@@ -4,10 +4,9 @@
 
 \usepackage{mytitle}
 
-\title{}
+\title{Gaussian Filterの作成}
 \author{201720690 小松 弘人}
-\date{20//}
-\pagestyle{empty}
+\date{2017/06/12}
 
 \makeatletter
 \def\mojiparline#1{
@@ -28,7 +27,82 @@
 
 \begin{document}
 \maketitle
-\thispagestyle{empty}
-\subsection*{}
+\subsection*{演習目的}
+簡単なストリーム処理回路の設計およびシミュレーション方法を学ぶ。
+
+\subsection*{演習概要}
+$3\!\times\!3$ガウシアンフィルタを実装し、実機で確認する。
+
+\subsection*{演習内容}
+\subsubsection*{事前準備}
+03\_loopbackの演習を終わらせておくこと。
+
+\subsubsection*{gaussianモジュールの作成 (Windows)}
+前回同様に、\verb|gaussian.v|を作成する。
+ただし、入力は\verb|duo|, \verb|dco|, \verb|dlo|の3つである。
+それぞれが、上段、中段、下段の入力である。
+それぞれの段の入力信号の下位$8\mathrm{[bit]}$は、
+RGBをY (輝度) に変換した値である。
+したがって、\verb|gaussian.v|の\verb|duo|, \verb|dco|, \verb|dlo|は
+それぞれ$8\mathrm{[bit]}$でよい。
+\verb|gaussian.v|では、これらの入力に対しGaussian Filter
+(式\ref{eq:gaussian}) を計算し、計算結果を
+出力側のFWFTモードのFIFOに格納する回路を作成する。
+このFIFOのデータ幅は$32\mathrm{[bit]}$である。
+そこで、輝度を3回繰り返し、先頭を0埋めしたものをFIFOに入力する。
+
+\begin{equation}
+	\label{eq:gaussian}
+	H(x, y)\!=\!\frac{1}{16}\!\left(
+	\begin{array}{ccc}
+		1 & 2 & 1 \\
+		2 & 4 & 2 \\
+		1 & 2 & 1 \\
+	\end{array}
+	\right)
+\end{equation}
+
+\subsubsection*{回路のシミュレーション (Windows)}
+Vivadoシミュレータを使用する。
+xillinuxリポジトリの中には、シミュレーション用のプロジェクトを
+作成するためのtclスクリプトが含まれている。
+これを前回と同様に実行する。
+Vivadoを起動し、Tools→Run Tcl Script...から
+userfiles/sim/create\_project.tclを実行する。
+しばらく待つと、wrapperプロジェクトが作成され、
+プロジェクトの内容が表示される。
+
+Vivadoシミュレータは、Flow NavigatorからRun Simulationをクリックし、
+Run Behavioral Simulationを押すことで起動できる。
+wrapperプロジェクトでは、wrapper.vに対し、画素値が左上から
+RGB=\verb|0x010101|, \verb|0x020202|, ...となっている$8\!\times\!8$
+の画像データを送るようなテストベンチが用意されている。
+Vivadoシミュレータが起動すると、シミュレーション結果が表示される。
+値を確認したい信号がその中に含まれていない場合、
+その信号をScopeから選択し、RestartしてからRunすることで、
+その信号の値を確認できる。
+
+\subsubsection*{演習用プログラムの実行 (Xillinux)}
+前回と同様に\verb|bin/send_bmp|を使用する。
+プログラムが終了しない場合は、シミュレータで
+\verb|wr_en|や\verb|rd_en|の値が正しいか確認すること。
+
+\subsubsection*{結果画像の確認 (Windows)}
+チュートリアルのページから、out-sim-softwareリポジトリを
+ダウンロードしておくこと。
+これは、Visual Studioのプロジェクトである。
+\verb|main.cpp|を編集し、画像のパス (11行目 \verb|SRC_FILE|)
+を変更する。
+このプログラムは、3つの画像を出力する。
+これらの3つの画像は、それぞれ以下のような画像である。
+3つの画像の違いは、範囲外の画素値の処理のみである。
+\begin{itemize}
+	\item
+		dst0.bmp: Vivadoのシミュレータの1枚目の出力結果
+	\item
+		dst1.bmp: Vivadoのシミュレータの2枚目以降の出力結果
+	\item
+		dst2.bmp: 実機で処理した結果として出力される画像
+\end{itemize}
 
 \end{document}
