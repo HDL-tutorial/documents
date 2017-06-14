@@ -1,0 +1,148 @@
+﻿\documentclass[dvipdfmx]{beamer}
+\usepackage{pxjahyper}
+\usepackage{bookmark}
+\usepackage{txfonts}
+
+\usetheme{Copenhagen}
+\usecolortheme{rose}
+
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\kanjifamilydefault}{\gtdefault}
+
+\setbeamercovered{dynamic}
+
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[page number]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{items}[default]
+\setbeamertemplate{blocks}[rounded]
+
+\usefonttheme{professionalfonts}
+\usefonttheme[onlymath]{serif}
+\usefonttheme{structurebold}
+\setbeamerfont{frametitle}{size=\Large}
+\setbeamerfont{title}{size=\Large}
+
+\title{0. チュートリアル概要}
+\author{201720690 小松 弘人}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+	\frametitle{Agenda}
+	\tableofcontents
+\end{frame}
+
+\section{演習の目的}
+\begin{frame}
+	\frametitle{演習の目的}
+
+	\begin{itemize}
+		\item
+			FPGAによる処理の基本を学習
+			\vfill
+		\item 
+			開発方法の基礎を学習
+			\vfill
+		\item
+			ストリーム処理を実践
+			\vfill
+		\item
+			Verilogに親しむ
+	\end{itemize}
+\end{frame}
+
+\section{演習の概要}
+\begin{frame}
+	\frametitle{演習の概要}
+	この演習は、画像のストリーム処理についての簡単な演習である
+	\begin{enumerate}
+		\item
+			FIFO IP Coreについて学ぶ
+			\vfill
+		\item
+			ストリーム処理の基礎を確認
+			\vfill
+		\item
+			$3\!\times\!3$ガウシアンフィルタを設計・実装
+			\vfill
+		\item
+			ZedBoard上でXillinuxを起動し、動作を確認
+	\end{enumerate}
+\end{frame}
+
+\section{演習にかかる目安}
+\begin{frame}
+	\frametitle{演習にかかる目安}
+	\begin{itemize}
+		\item
+			1週間～
+	\end{itemize}
+	\begin{description}
+		\item[説明]\mbox{}\\
+			1日程度
+		\item[実装]\mbox{}\\
+			1週間～
+	\end{description}
+\end{frame}
+
+\section{事前準備}
+\begin{frame}
+	\frametitle{事前準備}
+	\begin{itemize}
+		\item
+			ZedBoardとその周辺機器
+			\begin{itemize}
+				\item
+					VGAディスプレイ
+				\item
+					キーボード
+				\item
+					マウス
+				\item
+					USBハブなど
+			\end{itemize}
+			\vfill
+		\item
+			$2\mathrm{[GByte]}$以上のSDカード
+			\vfill
+		\item
+			Vivado 2014.4以降 (ライセンスはWebPACKでOK)
+			\vfill
+		\item
+			Microsoft Visual Studio 2015以降
+			\vfill
+		\item
+			演習に必要なファイル一式 (GitHubからダウンロード)
+			\vfill
+	\end{itemize}
+\end{frame}
+
+\section{演習に必要なファイル}
+\begin{frame}
+	\frametitle{演習に必要なファイル}
+	
+	GitHub (\url{https://github.com/HDL-tutorial})に、\\
+	演習に必要なデータをアップロードしている
+	\vfill
+	\begin{description}
+		\item[documents]\mbox{}
+			本演習のドキュメント集
+			\vfill
+		\item[xillinux]\mbox{}
+			Xillinuxのブートパーティションキット
+			\vfill
+		\item[software]\mbox{}
+			ZedBoard上で動作させるC++プログラム
+			\vfill
+		\item[out-sim-software]\mbox{}
+			結果を確認するためのC++プログラム
+			\vfill
+	\end{description}
+\end{frame}
+
+\end{document}
