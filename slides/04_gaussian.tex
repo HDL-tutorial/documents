@@ -1,0 +1,182 @@
+﻿\documentclass[dvipdfmx]{beamer}
+\usepackage{pxjahyper}
+\usepackage{bookmark}
+\usepackage{txfonts}
+
+\usetheme{Copenhagen}
+\usecolortheme{rose}
+
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\kanjifamilydefault}{\gtdefault}
+
+\renewcommand{\figurename}{図}
+\renewcommand{\tablename}{表}
+
+\setbeamercovered{dynamic}
+
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[page number]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{items}[default]
+\setbeamertemplate{blocks}[rounded]
+
+\usefonttheme{professionalfonts}
+\usefonttheme[onlymath]{serif}
+\usefonttheme{structurebold}
+\setbeamerfont{frametitle}{size=\Large}
+\setbeamerfont{title}{size=\Large}
+
+\title{4. Gaussian Filterの作成}
+\author{201720690 小松 弘人}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+	\frametitle{Agenda}
+	\tableofcontents
+\end{frame}
+
+\section{演習の目的}
+\begin{frame}
+	\frametitle{演習の目的}
+	\begin{itemize}
+		\item
+			簡単なストリーム処理回路の設計およびシミュレーション方法を学ぶ
+	\end{itemize}
+\end{frame}
+
+\section{演習の概要}
+\begin{frame}
+	\frametitle{演習の概要}
+	\begin{itemize}
+		\item
+			$3\!\times\!3$ガウシアンフィルタを実装し、実機で確認する
+	\end{itemize}
+\end{frame}
+
+\section{gaussianモジュールの作成 (Windows)}
+\begin{frame}
+	\frametitle{gaussianモジュールの作成 (Windows)}
+	\begin{enumerate}
+		\item
+			gaussian.vを作成する\\
+			\begin{itemize}
+				\item
+					データ入力信号をdui, dci, dliに増やす
+				\item
+					それぞれの入力の下位$8\mathrm{[bit]}$に輝度が入っている
+			\end{itemize}
+		\item
+			wrapper.vを編集
+		\item
+			gaussian.vを編集 (式の係数を用いる)
+			\begin{itemize}
+				\item
+					出力は輝度を3回繰り返し、先頭を0埋めしたものにする
+			\end{itemize}
+	\end{enumerate}
+	\begin{equation}
+		\label{eq:gaussian}
+		H(x, y)\!=\!\frac{1}{16}\!\left(
+		\begin{array}{ccc}
+			1 & 2 & 1 \\
+			2 & 4 & 2 \\
+			1 & 2 & 1 \\
+		\end{array}
+		\right)
+	\end{equation}
+\end{frame}
+
+\section{回路のシミュレーション (Windows)}
+\begin{frame}
+	\frametitle{回路のシミュレーション (Windows)}
+	\begin{enumerate}
+		\item
+			Vivadoシミュレータを使用する
+		\item
+			Vivadoを起動
+		\item
+			Tools→Run Tcl Script...で
+			userfiles/sim/create\_project.tclを実行
+		\item
+			wrapperプロジェクトが開くまで待つ
+		\item
+			Flow NavigatorからRun Simulation→Run Behavioral Simulation
+			をクリックし、Vivadoシミュレータを起動
+		\item
+			起動すると、シミュレーション結果が表示される
+		\item
+			確認したい信号が結果に含まれていない場合、
+			Scopeで信号を探し、波形表示の上にドラッグ\&ドロップし、
+			Restart\&Runで追加できる
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{wrapperプロジェクト}
+	\begin{itemize}
+		\item
+			以下のようなテストベンチを用意
+			\begin{itemize}
+				\item
+					wrapper.vに対してデータを入力
+					\vfill
+				\item
+					画素値が左上から順に
+					\verb|0x010101|, \verb|0x020202|, ...
+					となっている$8\!\times\!8$の画像データを送る
+					\vfill
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\section{演習用プログラムの実行 (Xillinux)}
+\begin{frame}[fragile]
+	\frametitle{演習用プログラムの実行 (Xillinux)}
+	\begin{itemize}
+		\item
+			前回と同様に\verb|bin/send_bmp|を使用する。
+			\vfill
+		\item
+			プログラムが終了しない場合は、シミュレータで
+			\verb|wr_en|や\verb|rd_en|の値が正しいか確認すること。
+	\end{itemize}
+\end{frame}
+
+\section{出力画像の確認 (Windows)}
+\begin{frame}[fragile]
+	\frametitle{出力画像の確認 (Windows)}
+	\begin{itemize}
+		\item
+			out-sim-softwareリポジトリをダウンロードする
+			\begin{itemize}
+				\item
+					Visual Studioのプロジェクト
+			\end{itemize}
+			\vfill
+		\item
+			\verb|main.cpp|を編集し、
+			画像のパス (11行目 \verb|SRC_FILE|)を変更
+			\vfill
+		\item
+			3種類の出力画像を生成する
+			\begin{itemize}
+				\item
+					違いは範囲外の画素値の処理のみ
+					\begin{description}
+						\item[dst0.bmp]\mbox{}
+							Vivadoのシミュレータの1枚目の出力
+						\item[dst1.bmp]\mbox{}
+							Vivadoのシミュレータの2枚目以降の出力
+						\item[dst2.bmp]\mbox{}
+							実機で処理した結果として出力される画像
+					\end{description}
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\end{document}
